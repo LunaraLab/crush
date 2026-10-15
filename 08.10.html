@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>08.10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#faf6ef; --parchment:#f1e6d3; --latte:#d9c3a4; --sage:#9caf94;
+  --rose:#c98a97; --espresso:#3a2b22; --midnight:#0a0e21; --amber:#e8b86d;
+  --ink:#2c231d; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --paper:#3a2b22; } }
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px);}
+body{margin:0; font-family:'Inter',sans-serif; background:var(--ivory); color:var(--ink); overflow-x:hidden;}
+h1,h2,.serif{font-family:'Playfair Display',serif;}
+.hand{font-family:'Caveat',cursive;}
+section{min-height:100vh; width:100%; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; overflow:hidden;}
+.reveal{opacity:0; transform:translateY(24px); transition:opacity 1s ease, transform 1s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+.small{font-size:.85rem; opacity:.7; letter-spacing:.04em;}
+.center-txt{text-align:center; max-width:520px;}
+.tap{cursor:pointer; user-select:none;}
+button{font-family:'Inter',sans-serif; border:none; cursor:pointer; -webkit-tap-highlight-color:transparent;}
+.pill{padding:12px 28px; border-radius:40px; background:var(--espresso); color:var(--ivory); font-size:.9rem; letter-spacing:.05em;}
+.card{background:var(--ivory); border-radius:4px; box-shadow:0 12px 30px rgba(0,0,0,.18); border:6px solid #fff;}
+.paper-bg{background:radial-gradient(ellipse at top,var(--parchment),var(--ivory) 70%);}
+.grain::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ---- ACT 1 ---- */
+#act1{background:var(--midnight); color:var(--ivory);}
+#act1 .date{font-size:1.6rem; letter-spacing:.25em; opacity:0; animation:fadeIn 2s ease forwards; margin-bottom:40px;}
+@keyframes fadeIn{to{opacity:.85}}
+.bubble{background:#1c2140; border-radius:18px 18px 18px 4px; padding:14px 20px; font-size:1.1rem; max-width:280px; box-shadow:0 0 40px rgba(232,184,109,.08); opacity:0;}
+.bubble.show{animation:pop .6s ease forwards;}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.96)} to{opacity:1;transform:translateY(0) scale(1)}}
+.caret{display:inline-block;width:2px;background:var(--amber);margin-left:2px;animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0}}
+.line2{margin-top:26px; font-size:.95rem; opacity:0; letter-spacing:.05em;}
+.line2.show{animation:fadeIn 1.6s ease forwards;}
+.spark{position:absolute; width:5px; height:5px; border-radius:50%; background:var(--amber); box-shadow:0 0 12px 4px rgba(232,184,109,.5); opacity:0;}
+
+/* ---- ACT 2/3 collage ---- */
+#collage{background:var(--parchment);}
+.collage-wrap{position:relative; width:100%; max-width:480px; height:560px;}
+.snip{position:absolute; border-radius:3px; box-shadow:0 8px 20px rgba(0,0,0,.18); border:5px solid #fff; display:flex; align-items:center; justify-content:center; text-align:center; padding:8px; font-size:.8rem; color:#6b5c4c; transition:transform .35s ease, box-shadow .35s ease; overflow:hidden;}
+.snip.note{background:#fff9e8; font-family:'Caveat',cursive; font-size:1.1rem; border:none; box-shadow:0 6px 14px rgba(0,0,0,.12);}
+.snip:active{transform:scale(.97);}
+.snip.lifted{transform:scale(1.12) rotate(0deg) !important; z-index:50; box-shadow:0 24px 50px rgba(0,0,0,.32);}
+.cap-tag{position:absolute; bottom:6px; left:50%; transform:translateX(-50%); background:var(--espresso); color:#fff; font-size:.7rem; padding:3px 10px; border-radius:20px; opacity:0; transition:opacity .3s;}
+.snip.lifted .cap-tag{opacity:1;}
+
+/* ---- ACT 4 chase ---- */
+#chase{background:var(--sage); color:var(--espresso);}
+.stage{position:relative; width:280px; height:180px; margin:20px 0 30px;}
+.char{position:absolute; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6rem; transition:transform .5s cubic-bezier(.5,1.8,.5,1), background .3s;}
+.char.a{background:var(--espresso); color:#fff; left:20px; top:60px;}
+.char.b{background:#fff; left:190px; top:70px;}
+.chase-btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:320px;}
+.chase-btns button{padding:10px 18px; border-radius:30px; background:#fff; font-size:.85rem;}
+#reaction{margin-top:16px; min-height:24px; font-family:'Caveat',cursive; font-size:1.3rem;}
+
+/* ---- ACT 5 memory box ---- */
+#box{background:var(--espresso); color:var(--ivory);}
+.mem-box{width:180px; height:120px; background:linear-gradient(#5a4433,#3a2b22); border-radius:6px 6px 2px 2px; position:relative; box-shadow:0 20px 40px rgba(0,0,0,.4); margin-bottom:30px;}
+.mem-box::before{content:'Pick one.'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Caveat',cursive; font-size:1.3rem; color:#e8d9c3;}
+.polaroid{width:210px; background:#fff; border-radius:2px; padding:10px 10px 30px; box-shadow:0 18px 40px rgba(0,0,0,.4); color:#3a2b22; text-align:center; transform:rotate(-2deg); transition:transform .5s ease, opacity .5s ease;}
+.polaroid .img{height:150px; border-radius:2px; margin-bottom:10px; display:flex; align-items:center; justify-content:center; font-size:2rem;}
+.polaroid .cap{font-family:'Caveat',cursive; font-size:1.1rem;}
+.deal-enter{animation:deal .5s ease;}
+@keyframes deal{from{opacity:0; transform:translateY(-40px) rotate(-8deg)} to{opacity:1; transform:rotate(-2deg)}}
+
+/* ---- ACT 6 film strip ---- */
+#film{background:#151515; color:#eee;}
+.strip{display:flex; gap:14px; overflow-x:auto; width:100%; padding:20px 24px; scroll-snap-type:x mandatory;}
+.frame{flex:0 0 150px; height:200px; scroll-snap-align:center; border:8px solid #000; outline:2px solid #333; background:#2a2a2a; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:2rem; position:relative; transition:transform .3s;}
+.frame .fcap{position:absolute; bottom:6px; font-size:.65rem; opacity:.7; font-family:'Inter';}
+.frame.big{flex-basis:210px; height:260px; font-size:2.6rem;}
+
+/* ---- ACT 7 little things ---- */
+#things{background:var(--parchment);}
+.things-field{position:relative; width:100%; max-width:420px; height:420px;}
+.thing{position:absolute; width:52px; height:52px; border-radius:50%; background:#fff; box-shadow:0 8px 18px rgba(0,0,0,.15); display:flex; align-items:center; justify-content:center; font-size:1.4rem;}
+.thing .tip{position:absolute; top:60px; left:50%; transform:translateX(-50%); background:var(--espresso); color:#fff; font-family:'Caveat',cursive; font-size:1rem; padding:4px 12px; border-radius:14px; white-space:nowrap; opacity:0; transition:opacity .3s; pointer-events:none;}
+.thing.open .tip{opacity:1;}
+
+/* ---- ACT 8/9 stars ---- */
+#stars{background:var(--midnight); color:var(--ivory); min-height:100vh;}
+.starfield{position:absolute; inset:0;}
+.dot{position:absolute; width:2px; height:2px; background:#fff; border-radius:50%; opacity:0;}
+.bright{width:14px; height:14px; box-shadow:0 0 30px 10px rgba(232,184,109,.7); background:var(--amber); opacity:0;}
+.star-line{position:relative; font-size:1.05rem; opacity:0; margin:6px 0; letter-spacing:.03em; text-align:center; max-width:340px;}
+.star-line.show{animation:fadeIn 1.8s ease forwards;}
+.thats-you{position:relative; font-family:'Playfair Display',serif; font-style:italic; font-size:1.8rem; opacity:0; margin-top:16px;}
+.thats-you.show{animation:fadeIn 2s ease forwards;}
+
+/* ---- ACT 10 constellation ---- */
+#constellation{background:var(--midnight); color:var(--ivory);}
+.const-wrap{position:relative; width:100%; max-width:380px; height:340px;}
+.cstar{position:absolute; width:10px; height:10px; border-radius:50%; background:var(--amber); box-shadow:0 0 14px 4px rgba(232,184,109,.5); transition:transform .5s;}
+.cstar .lbl{position:absolute; top:14px; left:50%; transform:translateX(-50%); font-size:.65rem; opacity:.7; white-space:nowrap;}
+.mem-overlay{position:fixed; inset:0; background:rgba(10,14,33,.92); display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .4s; z-index:200;}
+.mem-overlay.show{opacity:1; pointer-events:auto;}
+.mem-overlay .polaroid{transform:rotate(0);}
+
+/* ---- ACT 11/13 flip polaroid ---- */
+.flip-wrap{perspective:1000px; width:230px; height:280px;}
+.flip-card{width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.4,.2,.2,1);}
+.flip-card.flipped{transform:rotateY(180deg);}
+.flip-face{position:absolute; inset:0; backface-visibility:hidden; background:#fff; border-radius:2px; box-shadow:0 20px 40px rgba(0,0,0,.35); display:flex; align-items:center; justify-content:center; flex-direction:column; padding:16px; text-align:center;}
+.flip-back{transform:rotateY(180deg);}
+
+/* ---- ACT 12 birthday ---- */
+#birthday{background:linear-gradient(#fff6e6,var(--parchment)); color:var(--espresso);}
+.candle{font-size:3rem; animation:flicker 2s ease-in-out infinite;}
+@keyframes flicker{0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-2px) scale(1.05)}}
+.mini-row{display:flex; gap:10px; margin:24px 0;}
+.mini{width:60px; height:76px; border-radius:2px; background:#fff; box-shadow:0 6px 14px rgba(0,0,0,.15); display:flex; align-items:center; justify-content:center; font-size:1.3rem; transform:rotate(-3deg);}
+.mini:nth-child(even){transform:rotate(3deg);}
+
+/* ---- final tab ---- */
+#final{background:var(--espresso); color:var(--ivory);}
+.wa-btn{display:inline-block; margin-top:20px; padding:14px 30px; border-radius:40px; background:var(--amber); color:var(--espresso); font-weight:600; text-decoration:none; box-shadow:0 10px 26px rgba(232,184,109,.3);}
+.letter-toggle{margin-top:50px; font-size:.85rem; opacity:.6; text-decoration:underline; cursor:pointer; background:none; color:inherit;}
+.letter{max-width:420px; background:#fffaf0; color:#3a2b22; border-radius:4px; padding:28px 24px; box-shadow:0 20px 50px rgba(0,0,0,.3); font-family:'Cormorant Garamond',serif; font-size:1.15rem; line-height:1.7; max-height:0; overflow:hidden; opacity:0; transition:max-height .6s ease, opacity .6s ease, margin .6s ease; margin-top:0;}
+.letter.open{max-height:600px; opacity:1; margin-top:24px;}
+.editable-note{font-size:.65rem; opacity:.4; margin-top:60px; max-width:300px; text-align:center;}
+
+.scrolldown{position:absolute; bottom:26px; font-size:1.4rem; opacity:.5; animation:bob 2s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)}}
+</style>
+</head>
+<body>
+
+<!-- ============ CONFIG (edit everything here) ============ -->
+<script>
+const KEEPSAKE = {
+  personName: "Her",
+  birthday: "October 08",
+  beginningDate: "08 / 10 / 2023",
+  firstBirthdayMessage: "Happy Birthday :)",
+  whatsappNumber: "911234567890", // country code + number, no + or spaces
+  whatsappMessage: "Okay... I actually went through all of it 😂 Happy Birthday to me, apparently. And yes — someday we'll finally add that missing photo.",
+  letter: "There's not much more to say that the little moments haven't already said. Just — thank you for every random Tuesday, every argument that ended in laughing, every time you listened when it mattered. This whole thing exists because one small message turned into a lot of everyday. Happy birthday. I mean it more than this page can show.",
+};
+</script>
+
+<!-- ============ ACT 1 : THE FIRST MESSAGE ============ -->
+<section id="act1" class="grain">
+  <div class="date reveal" id="dateLine">08 / 10 / 2023</div>
+  <div class="bubble" id="bubble1"><span id="typedTxt"></span><span class="caret" id="caret"></span></div>
+  <div class="line2" id="line2">That was the beginning.</div>
+  <div class="scrolldown">↓</div>
+</section>
+
+<!-- ============ ACT 2/3 : COLLAGE + MEMORY WALL ============ -->
+<section id="collage" class="paper-bg">
+  <div class="center-txt reveal" style="margin-bottom:26px;">
+    <div class="hand" style="font-size:1.4rem;">Then somehow...</div>
+    <div class="small" style="margin-top:6px;">...we started talking about everything.</div>
+  </div>
+  <div class="collage-wrap" id="collageWrap"></div>
+</section>
+
+<!-- ============ ACT 4 : TOM & JERRY ENERGY ============ -->
+<section id="chase">
+  <h2 class="reveal" style="margin-bottom:4px;">Us.</h2>
+  <div class="stage" id="stage">
+    <div class="char a" id="charA">🌰</div>
+    <div class="char b" id="charB">🐾</div>
+  </div>
+  <div class="chase-btns">
+    <button onclick="react('tease')">TEASE.</button>
+    <button onclick="react('argue')">ARGUE.</button>
+    <button onclick="react('annoy')">ANNOY.</button>
+    <button onclick="react('laugh')">LAUGH.</button>
+  </div>
+  <div id="reaction"></div>
+  <div class="small hand" style="margin-top:18px; font-size:1.1rem;">Tom &amp; Jerry energy.</div>
+</section>
+
+<!-- ============ ACT 5 : MEMORY BOX ============ -->
+<section id="box">
+  <div class="mem-box"></div>
+  <div id="cardHolder"></div>
+  <button class="pill" style="margin-top:26px;" onclick="dealCard()">ANOTHER ONE</button>
+</section>
+
+<!-- ============ ACT 6 : FILM STRIP ============ -->
+<section id="film" style="padding:60px 0;">
+  <div class="strip" id="filmStrip"></div>
+</section>
+
+<!-- ============ ACT 7 : THE LITTLE THINGS ============ -->
+<section id="things">
+  <div class="hand reveal" style="font-size:1.3rem; margin-bottom:20px;">The little things.</div>
+  <div class="things-field" id="thingsField"></div>
+</section>
+
+<!-- ============ ACT 8/9 : STARS ============ -->
+<section id="stars">
+  <div class="starfield" id="starfield"></div>
+  <div class="star-line" id="sl1">Funny thing...</div>
+  <div class="star-line" id="sl2">Someone can live so far away...</div>
+  <div class="star-line" id="sl3">...and still become part of your everyday world.</div>
+  <div class="star-line" id="sl4" style="margin-top:40px;">Out of all these little lights...</div>
+  <div class="star-line" id="sl5">...there's always one you notice.</div>
+  <div class="thats-you" id="thatsYou">That's you.</div>
+</section>
+
+<!-- ============ ACT 10 : CONSTELLATION ============ -->
+<section id="constellation">
+  <div class="small reveal" style="margin-bottom:10px; letter-spacing:.1em;">TAP A STAR</div>
+  <div class="const-wrap" id="constWrap"></div>
+</section>
+<div class="mem-overlay" id="memOverlay" onclick="closeMem()">
+  <div class="polaroid" id="memPolaroid" onclick="event.stopPropagation()">
+    <div class="img" id="memImg"></div>
+    <div class="cap" id="memCap"></div>
+  </div>
+</div>
+
+<!-- ============ ACT 11 : THE PHOTO THAT DOESN'T EXIST YET ============ -->
+<section id="futurePolaroid" class="paper-bg">
+  <div class="flip-wrap"><div class="flip-card" id="flip1" onclick="this.classList.toggle('flipped')">
+    <div class="flip-face">
+      <div class="hand" style="font-size:1.3rem;">One photo is missing.</div>
+      <div class="small" style="margin-top:14px;">(tap)</div>
+    </div>
+    <div class="flip-face flip-back">
+      <div class="serif" style="font-size:1.1rem;">Because it hasn't happened yet.</div>
+      <div class="hand" style="font-size:1.3rem; margin-top:12px;">Not yet. Someday.</div>
+    </div>
+  </div></div>
+  <div class="small reveal" style="margin-top:34px; max-width:280px; text-align:center;">One day, this won't be a screen.</div>
+</section>
+
+<!-- ============ ACT 12 : BIRTHDAY RETURN ============ -->
+<section id="birthday">
+  <div class="small reveal" style="letter-spacing:.3em;" id="bdayDate">08 / 10</div>
+  <div class="candle reveal">🕯️</div>
+  <div class="mini-row" id="miniRow"></div>
+  <div class="reveal center-txt">
+    <div class="small">Today is yours.</div>
+    <h1 style="margin:10px 0; font-size:1.6rem;" id="bdayHeadline">HAPPY BIRTHDAY</h1>
+    <div class="hand" style="font-size:1.2rem;">Still glad that message happened.</div>
+  </div>
+</section>
+
+<!-- ============ ACT 13 : LAST PHOTO ============ -->
+<section id="lastPhoto">
+  <div class="flip-wrap"><div class="flip-card" id="flip2" onclick="this.classList.toggle('flipped')">
+    <div class="flip-face">
+      <div class="serif" style="font-size:1.15rem; letter-spacing:.03em;">TO BE CONTINUED...</div>
+    </div>
+    <div class="flip-face flip-back">
+      <div class="hand" style="font-size:1.25rem;">Next photo...</div>
+      <div class="hand" style="font-size:1.25rem; margin-top:8px;">...we'll have to take ourselves.</div>
+    </div>
+  </div></div>
+  <div class="small reveal" style="margin-top:30px;">Until then,<br>keep being you.</div>
+</section>
+
+<!-- ============ FINAL : SEND SOMETHING BACK ============ -->
+<section id="final">
+  <div class="hand reveal" style="font-size:1.2rem;">If you made it this far...</div>
+  <a class="wa-btn reveal" id="waBtn" href="#" target="_blank" rel="noopener">Send something back →</a>
+  <button class="letter-toggle" onclick="toggleLetter()">There's actually more...</button>
+  <div class="letter" id="letterBox"></div>
+  <div class="editable-note">08.10 — a small interactive world, not a webpage.</div>
+</section>
+
+<script>
+/* ---------- utility ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* reveal on scroll */
+const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }), {threshold:.25});
+document.addEventListener('DOMContentLoaded', ()=> $$('.reveal').forEach(el=>io.observe(el)));
+
+/* ---------- ACT 1 ---------- */
+function typeLine(txt, el, done){
+  let i=0;
+  const t = setInterval(()=>{ el.textContent += txt[i]; i++; if(i>=txt.length){ clearInterval(t); done&&done(); } }, 65);
+}
+const act1 = document.getElementById('act1');
+const io1 = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      $('#bubble1').classList.add('show');
+      setTimeout(()=> typeLine(KEEPSAKE.firstBirthdayMessage, $('#typedTxt'), ()=>{
+        $('#caret').style.display='none';
+        setTimeout(()=> $('#line2').classList.add('show'), 500);
+      }), 500);
+      io1.disconnect();
+    }
+  });
+},{threshold:.4});
+io1.observe(act1);
+
+/* ---------- ACT 2/3 collage ---------- */
+const collageItems = [
+  {t:'📷', big:true, w:190,h:150,top:0,left:10, rot:-3, cap:'That day.'},
+  {t:'💬', w:110,h:70, top:20,left:220, rot:4, cap:'Still funny.', note:true},
+  {t:'📸', w:120,h:150, top:170,left:0, rot:5, cap:'Peak chaos.'},
+  {t:'✎', w:130,h:90, top:150,left:150, rot:-6, cap:'You probably forgot this.', note:true},
+  {t:'🎞️', w:100,h:130, top:330,left:200, rot:3, cap:'This one stays.'},
+  {t:'🖼️', w:150,h:110, top:340,left:20, rot:-2, cap:'That conversation.'},
+  {t:'🏷️', w:80,h:60, top:0,left:330, rot:8, cap:'Random Tuesday.', note:true},
+  {t:'📎', w:90,h:90, top:470,left:120, rot:-8, cap:'That one.'},
+];
+const cw = $('#collageWrap');
+collageItems.forEach(it=>{
+  const d=document.createElement('div');
+  d.className='snip tap'+(it.note?' note':'');
+  d.style.cssText=`width:${it.w}px;height:${it.h}px;top:${it.top}px;left:${it.left}px;transform:rotate(${it.rot}deg);`;
+  d.innerHTML = `<span style="font-size:${it.note?'0':'1.8rem'}">${it.note?'':it.t}</span><span class="cap-tag">${it.cap}</span>`;
+  if(it.note) d.querySelector('span').outerHTML = `<span>${it.cap.length>18?'"...just us."':'"remember?"'}</span><span class="cap-tag">${it.cap}</span>`;
+  d.onclick=()=>{ $$('.snip').forEach(s=>{if(s!==d)s.classList.remove('lifted');}); d.classList.toggle('lifted'); };
+  cw.appendChild(d);
+});
+
+/* ---------- ACT 4 chase ---------- */
+const reactions = {
+  tease:['A pokes B.','no comment.'],
+  argue:['They drift apart.','5 seconds of silence.'],
+  annoy:['B gets even.','typical.'],
+  laugh:['Back to normal.','always.']
+};
+function react(type){
+  const a=$('#charA'), b=$('#charB');
+  const r = reactions[type];
+  if(type==='tease'){ a.style.transform='translateX(90px)'; b.style.transform='translateX(-20px) scale(1.1)'; }
+  if(type==='argue'){ a.style.transform='translateX(-10px)'; b.style.transform='translateX(20px)'; }
+  if(type==='annoy'){ a.style.transform='translateX(60px) rotate(15deg)'; b.style.transform='translateX(-30px) rotate(-15deg)'; }
+  if(type==='laugh'){ a.style.transform='translateX(0)'; b.style.transform='translateX(0)'; }
+  $('#reaction').textContent = r[Math.floor(Math.random()*r.length)];
+}
+
+/* ---------- ACT 5 memory box ---------- */
+const memCards = [
+  {e:'📚',c:'That study panic.'},
+  {e:'😂',c:'Why was this even funny?'},
+  {e:'🖼️',c:"We really talked about everything."},
+  {e:'🎧',c:'That song, again.'},
+  {e:'📱',c:'3am, obviously.'},
+  {e:'🃏',c:'Completely unnecessary chaos.'},
+  {e:'✨',c:'Unexpectedly good day.'}
+];
+function dealCard(){
+  const m = memCards[Math.floor(Math.random()*memCards.length)];
+  $('#cardHolder').innerHTML = `<div class="polaroid deal-enter"><div class="img">${m.e}</div><div class="cap">${m.c}</div></div>`;
+}
+dealCard();
+
+/* ---------- ACT 6 film strip ---------- */
+const frames = ['🌅','☕','📖','🎬','🌙','🎧','🖊️','🌆','🎈'];
+const strip = $('#filmStrip');
+frames.forEach((f,i)=>{
+  const el=document.createElement('div');
+  el.className='frame'+(i%3===1?' big':'');
+  el.innerHTML = `${f}<span class="fcap">frame ${i+1}</span>`;
+  el.onclick=()=> el.classList.toggle('big');
+  strip.appendChild(el);
+});
+
+/* ---------- ACT 7 little things ---------- */
+const things = [
+  {e:'☕',c:'That study panic.',x:20,y:20},
+  {e:'🎧',c:'That song.',x:200,y:10},
+  {e:'📖',c:'That ridiculous argument.',x:320,y:60},
+  {e:'📱',c:'That one message.',x:60,y:150},
+  {e:'⭐',c:'That laugh.',x:220,y:180},
+  {e:'📝',c:'That random Tuesday.',x:340,y:230},
+  {e:'🎫',c:'That inside joke.',x:100,y:300},
+  {e:'📼',c:'That whole playlist.',x:260,y:330},
+];
+const tf = $('#thingsField');
+things.forEach(t=>{
+  const d=document.createElement('div');
+  d.className='thing tap';
+  d.style.cssText=`left:${t.x}px; top:${t.y}px;`;
+  d.innerHTML = `${t.e}<span class="tip">${t.c}</span>`;
+  d.onclick=()=>{ $$('.thing').forEach(x=>{if(x!==d)x.classList.remove('open');}); d.classList.toggle('open'); };
+  tf.appendChild(d);
+});
+
+/* ---------- ACT 8/9 stars ---------- */
+const sf = $('#starfield');
+for(let i=0;i<120;i++){
+  const d=document.createElement('div');
+  d.className='dot';
+  d.style.left=Math.random()*100+'%'; d.style.top=Math.random()*100+'%';
+  sf.appendChild(d);
+}
+const bright=document.createElement('div');
+bright.className='dot bright'; bright.style.left='50%'; bright.style.top='42%';
+sf.appendChild(bright);
+
+const io2 = new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      $$('#starfield .dot').forEach((d,i)=> setTimeout(()=> d.style.opacity = d===bright?0:(.3+Math.random()*.7), i*8));
+      const seq = ['sl1','sl2','sl3'];
+      seq.forEach((id,i)=> setTimeout(()=> $('#'+id).classList.add('show'), 800+i*1800));
+      setTimeout(()=>{ bright.style.transition='opacity 2s ease, transform 2s ease'; bright.style.opacity=1; bright.style.transform='scale(1.8)'; }, 6500);
+      setTimeout(()=> $('#sl4').classList.add('show'), 7200);
+      setTimeout(()=> $('#sl5').classList.add('show'), 9000);
+      setTimeout(()=> $('#thatsYou').classList.add('show'), 11200);
+      io2.disconnect();
+    }
+  });
+},{threshold:.5});
+io2.observe($('#stars'));
+
+/* ---------- ACT 10 constellation ---------- */
+const constMems = [
+  {n:'that night', e:'🌙', c:'The one that went too long.'},
+  {n:'that joke', e:'😂', c:'Still not over it.'},
+  {n:'study mode', e:'📚', c:'Somehow survived.'},
+  {n:'that song', e:'🎵', c:'You know the one.'},
+  {n:'that fight', e:'⚡', c:'Resolved by morning.'},
+  {n:'that laugh', e:'✨', c:'Loudest one yet.'},
+];
+const constPositions = [[10,10],[70,15],[30,55],[80,60],[15,85],[55,90]];
+const cwrap = $('#constWrap');
+constMems.forEach((m,i)=>{
+  const [x,y]=constPositions[i];
+  const d=document.createElement('div');
+  d.className='cstar tap';
+  d.style.left=x+'%'; d.style.top=y+'%';
+  d.innerHTML=`<span class="lbl">${m.n}</span>`;
+  d.onclick=()=> openMem(m);
+  cwrap.appendChild(d);
+});
+function openMem(m){
+  $('#memImg').textContent=m.e;
+  $('#memCap').textContent=m.c;
+  $('#memOverlay').classList.add('show');
+}
+function closeMem(){ $('#memOverlay').classList.remove('show'); }
+
+/* ---------- ACT 12 birthday content ---------- */
+$('#bdayDate').textContent = KEEPSAKE.beginningDate.slice(0,5).trim();
+$('#bdayHeadline').textContent = 'HAPPY BIRTHDAY' + (KEEPSAKE.personName?', '+KEEPSAKE.personName.toUpperCase():'');
+['📷','🎈','✨','☕','🎧'].forEach(e=>{
+  const d=document.createElement('div'); d.className='mini'; d.textContent=e; $('#miniRow').appendChild(d);
+});
+
+/* ---------- FINAL ---------- */
+$('#waBtn').href = `https://wa.me/${KEEPSAKE.whatsappNumber}?text=${encodeURIComponent(KEEPSAKE.whatsappMessage)}`;
+function toggleLetter(){
+  const box = $('#letterBox');
+  if(!box.classList.contains('open')){ box.textContent = KEEPSAKE.letter; }
+  box.classList.toggle('open');
+}
+</script>
+</body>
+</html>
